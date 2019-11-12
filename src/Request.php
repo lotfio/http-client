@@ -292,11 +292,14 @@ final class Request extends Message
      *
      * @param callable|null $onUpgrade
      */
-    public function setUpgradeHandler(callable $onUpgrade): void
+    public function setUpgradeHandler(?callable $onUpgrade): void
     {
         $this->onUpgrade = $onUpgrade;
     }
 
+    /**
+     * @return callable|null
+     */
     public function getUpgradeHandler(): ?callable
     {
         return $this->onUpgrade;

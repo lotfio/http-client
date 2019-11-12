@@ -23,7 +23,7 @@ class Http1ConnectionTest extends AsyncTestCase
 
         $connection = new Http1Connection($client, 5000);
 
-        $request = new Request('http://example.com');
+        $request = new Request('http://localhost');
         $request->setBody($this->createSlowBody());
 
         /** @var Stream $stream */
@@ -40,7 +40,7 @@ class Http1ConnectionTest extends AsyncTestCase
 
         $connection = new Http1Connection($client, 5000);
 
-        $request = new Request('http://example.com');
+        $request = new Request('http://localhost');
         $request->setBody($this->createSlowBody());
 
         /** @var Stream $stream */
@@ -56,7 +56,7 @@ class Http1ConnectionTest extends AsyncTestCase
 
         $connection = new Http1Connection($client, 5000);
 
-        $request = new Request('http://example.com');
+        $request = new Request('http://localhost');
         $request->setBody($this->createSlowBody());
 
         /** @var Stream $stream */
@@ -113,7 +113,7 @@ class Http1ConnectionTest extends AsyncTestCase
         /** @var Stream $stream */
         $stream = yield $connection->getStream($request);
 
-        $server->write("HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\n\r\n" . $socketData);
+        $server->write("HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: test\r\n\r\n" . $socketData);
 
         /** @var Response $response */
         $response = yield $stream->request($request, new NullCancellationToken);

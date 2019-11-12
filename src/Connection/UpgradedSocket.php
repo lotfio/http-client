@@ -5,14 +5,13 @@ namespace Amp\Http\Client\Connection;
 use Amp\CancellationToken;
 use Amp\Promise;
 use Amp\Socket\EncryptableSocket;
-use Amp\Socket\ResourceSocket;
 use Amp\Socket\SocketAddress;
 use Amp\Socket\TlsInfo;
 use Amp\Success;
 
 final class UpgradedSocket implements EncryptableSocket
 {
-    /** @var ResourceSocket */
+    /** @var EncryptableSocket */
     private $socket;
 
     /** @var string|null */
@@ -82,11 +81,6 @@ final class UpgradedSocket implements EncryptableSocket
     public function getRemoteAddress(): SocketAddress
     {
         return $this->socket->getRemoteAddress();
-    }
-
-    public function getResource()
-    {
-        return $this->socket->getResource();
     }
 
     public function setupTls(?CancellationToken $token = null): Promise

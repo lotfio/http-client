@@ -279,8 +279,17 @@ final class Http1Connection implements Connection
                 $status = $response->getStatus();
 
                 if ($status === Http\Status::SWITCHING_PROTOCOLS) {
+                    $connection = Http\createFieldValueComponentMap(Http\parseFieldValueComponents($response, 'connection'));
+                    if (!isset($connection['upgrade'])) {
+                        throw new HttpException('Switching protocols response missing "Connection: upgrade" header');
+                    }
+
+                    if (!$response->hasHeader('upgrade')) {
+                        throw new HttpException('Switching protocols response missing "Upgrade" header');
+                    }
+
                     if (($onUpgrade = $request->getUpgradeHandler()) === null) {
-                        throw new HttpException('Received Switching Protocols response without upgrade handler callback');
+                        throw new HttpException('Received switching protocols response without upgrade handler callback');
                     }
 
                     $socket = new UpgradedSocket($this->socket, $parser->getBuffer());
